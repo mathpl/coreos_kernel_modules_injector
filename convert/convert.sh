@@ -8,6 +8,7 @@ help() {
     echo "COREOS_DEV_IMAGE coreos/dev-container"
     echo "KBUILDER_IMAGE   coreos/kmod-builder"
     echo
+    echo "Depending on your version of docker you might need to set DOCKER_API_VERSION."
     exit 1
 }
 
@@ -62,7 +63,12 @@ fi
 mkdir images 2>/dev/null
 mkdir dockerfiles 2>/dev/null
 
-docker run -ti -e=COREOS_CHANNEL=$COREOS_CHANNEL -e=COREOS_VERSION=$COREOS_VERSION -e=COREOS_DEV_TARGET=${COREOS_DEV_TARGET} -v=/var/run/docker.sock:/var/run/docker.sock -v=$(pwd)/images:/images mathpl/coreos-container-extractor:0.1
+DOCKER_OPTS="-e=COREOS_CHANNEL=$COREOS_CHANNEL -e=COREOS_VERSION=$COREOS_VERSION -e=COREOS_DEV_TARGET=${COREOS_DEV_TARGET} -v=/var/run/docker.sock:/var/run/docker.sock -v=$(pwd)/images:/images"
+if [ ! -z "$DOCKER_API_VERSION" ]; then
+    DOCKER_OPTS="$DOCKER_OPTS -e=DOCKER_OPTS=$DOCKER_OPTS"
+fi
+
+docker run -ti $DOCKER_OPTS mathpl/coreos-container-extractor:0.1
 if [ "$?" != 0 ]; then
     exit $?
 fi

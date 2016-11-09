@@ -26,12 +26,15 @@ if [ -z "$COREOS_DEV_TARGET" ]; then
     exit 1
 fi
 
-wget -N -O/images/coreos_developer_container.${COREOS_VERSION}.bin.bz2 https://$COREOS_CHANNEL.release.core-os.net/$COREOS_ARCH/$COREOS_VERSION/coreos_developer_container.bin.bz2
+FILE="/images/coreos_developer_container.${COREOS_VERSION}.bin"
+if [ ! -f "$FILE" ]; then
+    wget -N -O$FILE https://$COREOS_CHANNEL.release.core-os.net/$COREOS_ARCH/$COREOS_VERSION/coreos_developer_container.bin.bz2
 
-echo "Uncompressing disk image..."
-bunzip2 -v -c /images/coreos_developer_container.${COREOS_VERSION}.bin.bz2 > /images/coreos_developer_container.${COREOS_VERSION}.bin
-echo done
+    echo "Uncompressing disk image..."
+    bunzip2 -v -c /images/coreos_developer_container.${COREOS_VERSION}.bin.bz2 > /images/coreos_developer_container.${COREOS_VERSION}.bin
+    echo done
+fi
 
 echo "Converting to docker image.."
-guestfish --ro -a /tmp/coreos_developer_container.${COREOS_VERSION}.bin -m /dev/sda9 -- tar-out / - | docker import - $COREOS_DEV_TARGET
+guestfish --ro -a $FILE -m /dev/sda9 -- tar-out / - | docker import - $COREOS_DEV_TARGET
 echo done
