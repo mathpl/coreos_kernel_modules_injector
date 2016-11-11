@@ -47,4 +47,5 @@ fi
 cd kbuilder
 ./build.sh $COREOS_CHANNEL $COREOS_VERSION 
 
-cd ../zfs $COREOS_VERSION $SPL_VERSION $ZFS_VERSION
+cd ../zfs
+./build.sh $COREOS_VERSION $SPL_VERSION $ZFS_VERSION

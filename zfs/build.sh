@@ -95,7 +95,7 @@ MOD_DIR="modules/$COREOS_VERSION-$SPL_VERSION-$ZFS_VERSION"
 mkdir $MOD_DIR 2>/dev/null
 DOCKER_OPTS="-e=COREOS_VERSION=$COREOS_VERSION -e=SPL_VERSION=${SPL_VERSION} -e=ZFS_VERSION=$ZFS_VERSION -v=$(pwd)/$BIN_DIR:/bin_dir -v=$(pwd)/$MOD_DIR:/mod_dir -v=$(pwd)/pkg:/pkg"
 
-docker run -ti $DOCKER_OPTS $ZFS_BUILDER_TARGET build
+docker run $DOCKER_OPTS $ZFS_BUILDER_TARGET build
 if [ $? -ne 0 ]; then
   echo "Failed to build modules: $?"
   exit 1
