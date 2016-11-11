@@ -66,10 +66,10 @@ ZFS_BUILDER_TARGET="$DOCKER_REGISTRY/$ZFS_BUILDER_IMAGE:$COREOS_VERSION"
 ZFS_INJECTOR_TARGET="$DOCKER_REGISTRY/$ZFS_INJECTOR_IMAGE:$ZFS_TAG"
 
 # Check if we've built it already
-if curl -q "https://$DOCKER_REGISTRY/v2/$ZFS_INJECTOR_IMAGE/tags/list" |grep -q "$ZFS_TAG"; then
-    echo "Kernel builder image $KBUILDER_TARGET already present, skipping!"
-    exit 0
-fi
+#if curl -q "https://$DOCKER_REGISTRY/v2/$ZFS_INJECTOR_IMAGE/tags/list" |grep -q "$ZFS_TAG"; then
+#    echo "Kernel builder image $KBUILDER_TARGET already present, skipping!"
+#    exit 0
+#fi
 
 mkdir pkg 2>/dev/null
 
@@ -91,7 +91,9 @@ fi
 
 BIN_DIR="binaries/$COREOS_VERSION-$SPL_VERSION-$ZFS_VERSION"
 mkdir $BIN_DIR 2>/dev/null
-DOCKER_OPTS="-e=COREOS_VERSION=$COREOS_VERSION -e=SPL_VERSION=${SPL_VERSION} -e=ZFS_VERSION=$ZFS_VERSION -v=$(pwd)/$BIN_DIR:/bin_dir -v=$(pwd)/pkg:/pkg"
+MOD_DIR="modules/$COREOS_VERSION-$SPL_VERSION-$ZFS_VERSION"
+mkdir $MOD_DIR 2>/dev/null
+DOCKER_OPTS="-e=COREOS_VERSION=$COREOS_VERSION -e=SPL_VERSION=${SPL_VERSION} -e=ZFS_VERSION=$ZFS_VERSION -v=$(pwd)/$BIN_DIR:/bin_dir -v=$(pwd)/$MOD_DIR:/mod_dir -v=$(pwd)/pkg:/pkg"
 
 docker run -ti $DOCKER_OPTS $ZFS_BUILDER_TARGET build
 if [ $? -ne 0 ]; then
