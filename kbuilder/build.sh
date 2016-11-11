@@ -68,7 +68,7 @@ if [ ! -z "$DOCKER_API_VERSION" ]; then
     DOCKER_OPTS="$DOCKER_OPTS -e=DOCKER_API_VERSION=$DOCKER_API_VERSION"
 fi
 
-docker run -ti $DOCKER_OPTS mathpl/coreos-container-extractor:0.1
+docker run $DOCKER_OPTS mathpl/coreos-container-extractor:0.1
 if [ "$?" != 0 ]; then
     exit $?
 fi
