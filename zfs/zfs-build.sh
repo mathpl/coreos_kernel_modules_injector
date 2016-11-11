@@ -10,7 +10,7 @@ tar xvzf /pkg/spl-${SPL_VERSION}.tar.gz
 tar xvzf /pkg/zfs-${ZFS_VERSION}.tar.gz
 
 echo "Building SPL..."
-cd spl-spl-${SPL_VERSION}
+cd spl-*
 ./autogen.sh
 kver=$(ls /usr/lib/modules/)
 ./configure --with-linux=/usr/src/linux --with-linux-obj=/usr/lib/modules/$kver/build --with-config=kernel
@@ -19,7 +19,7 @@ make -j2
 make install
 
 echo "Building ZFS..."
-cd /usr/src/zfs-${ZFS_VERSION}
+cd /usr/src/zfs-*
 ./configure --with-linux-obj=/usr/lib/modules/$kver/build --enable-static
 make clean
 make -j2
