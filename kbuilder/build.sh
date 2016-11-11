@@ -63,9 +63,9 @@ fi
 mkdir ../images 2>/dev/null
 mkdir dockerfiles 2>/dev/null
 
-DOCKER_OPTS="-e=COREOS_CHANNEL=$COREOS_CHANNEL -e=COREOS_VERSION=$COREOS_VERSION -e=COREOS_DEV_TARGET=${COREOS_DEV_TARGET} -v=/var/run/docker.sock:/var/run/docker.sock -v=$(pwd/..)/images:/images"
+DOCKER_OPTS="-e=COREOS_CHANNEL=$COREOS_CHANNEL -e=COREOS_VERSION=$COREOS_VERSION -e=COREOS_DEV_TARGET=${COREOS_DEV_TARGET} -v=/var/run/docker.sock:/var/run/docker.sock -v=$(pwd)/../images:/images"
 if [ ! -z "$DOCKER_API_VERSION" ]; then
-    DOCKER_OPTS="$DOCKER_OPTS -e=DOCKER_OPTS=$DOCKER_OPTS"
+    DOCKER_OPTS="$DOCKER_OPTS -e=DOCKER_API_VERSION=$DOCKER_API_VERSION"
 fi
 
 docker run -ti $DOCKER_OPTS mathpl/coreos-container-extractor:0.1

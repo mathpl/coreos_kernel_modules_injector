@@ -28,10 +28,10 @@ fi
 
 FILE="/images/coreos_developer_container.${COREOS_VERSION}.bin"
 if [ ! -f "$FILE" ]; then
-    wget -N -O$FILE https://$COREOS_CHANNEL.release.core-os.net/$COREOS_ARCH/$COREOS_VERSION/coreos_developer_container.bin.bz2
+    wget -N -O${FILE}.bz2 https://$COREOS_CHANNEL.release.core-os.net/$COREOS_ARCH/$COREOS_VERSION/coreos_developer_container.bin.bz2
 
     echo "Uncompressing disk image..."
-    bunzip2 -v -c /images/coreos_developer_container.${COREOS_VERSION}.bin.bz2 > /images/coreos_developer_container.${COREOS_VERSION}.bin
+    bunzip2 -v -c ${FILE}.bz2 > /images/coreos_developer_container.${COREOS_VERSION}.bin
     echo done
 fi
 
