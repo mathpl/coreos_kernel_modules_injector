@@ -1,0 +1,6 @@
+FROM <DOCKER_FROM>
+
+RUN emerge -gKv sys-libs/zlib
+RUN ldconfig 
+COPY zfs-build.sh /
+ENTRYPOINT [ "/zfs-build.sh" ]
