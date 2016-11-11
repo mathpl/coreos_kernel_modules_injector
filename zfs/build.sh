@@ -107,3 +107,5 @@ if [ $? -ne 0 ]; then
   echo "Failed to build injector: $?"
   exit 1
 fi
+docker push $ZFS_INJECTOR_TARGET
+
