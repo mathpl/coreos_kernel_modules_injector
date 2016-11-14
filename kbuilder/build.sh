@@ -82,3 +82,4 @@ fi
 sed -re "s|<DOCKER_FROM>|$COREOS_DEV_TARGET|" -e "s|<COREOS_MAJOR_VERSION>|$COREOS_MAJOR_VERSION|" $KBUILDER_DOCKER_FILE > dockerfiles/Dockerfile.$COREOS_VERSION
 
 docker build -f dockerfiles/Dockerfile.$COREOS_VERSION -t $KBUILDER_TARGET .
+docker push $KBUILDER_TARGET
