@@ -19,3 +19,13 @@ From there we do our builds. Currently in tree:
 5. Copy them out of the container.
 6. Build a much smaller injector image with the modules and binaries.
 7. Run image on coreos with the proper docker parameters.
+
+# Dahdi
+1. Using kbuilder image.
+3. Fetch dahdi with the specified version.
+4. Build it.
+5. Copy modules out of the container.
+6. Build a much smaller injector image with the modules.
+7. Run image on coreos with the proper docker parameters.
+
+

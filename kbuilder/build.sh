@@ -68,11 +68,17 @@ if [ ! -z "$DOCKER_API_VERSION" ]; then
     DOCKER_OPTS="$DOCKER_OPTS -e=DOCKER_API_VERSION=$DOCKER_API_VERSION"
 fi
 
-docker run $DOCKER_OPTS mathpl/coreos-container-extractor:0.1
+#docker run $DOCKER_OPTS mathpl/coreos-container-extractor:0.1
 if [ "$?" != 0 ]; then
     exit $?
 fi
 
-sed -re "s|<DOCKER_FROM>|$COREOS_DEV_TARGET|" -e "s|<COREOS_MAJOR_VERSION>|$COREOS_MAJOR_VERSION|" Dockerfile.template > dockerfiles/Dockerfile.$COREOS_VERSION
+KBUILDER_DOCKER_FILE="Dockerfile.multi_stage_kernel.template"
+# There is no coreos-module package
+if [[ $COREOS_MAJOR_VERSION -lt 1097 ]]; then
+    KBUILDER_DOCKER_FILE="Dockerfile.single_stage_kernel.template"
+fi
+
+sed -re "s|<DOCKER_FROM>|$COREOS_DEV_TARGET|" -e "s|<COREOS_MAJOR_VERSION>|$COREOS_MAJOR_VERSION|" $KBUILDER_DOCKER_FILE > dockerfiles/Dockerfile.$COREOS_VERSION
 
 docker build -f dockerfiles/Dockerfile.$COREOS_VERSION -t $KBUILDER_TARGET .

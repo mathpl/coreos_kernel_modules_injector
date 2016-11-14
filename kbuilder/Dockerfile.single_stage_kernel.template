@@ -1,0 +1,5 @@
+FROM <DOCKER_FROM>
+
+RUN emerge-gitclone
+RUN cd /var/lib/portage/coreos-overlay && git checkout build-<COREOS_MAJOR_VERSION>
+RUN emerge -gKv coreos-sources autoconf libtool
