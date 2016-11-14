@@ -84,7 +84,7 @@ if [ $? -ne 0 ]; then
 fi
 
 sed -re "s|<VERSION>|$DAHDI_TAG|" Dockerfile.injector.template > dockerfiles/Dockerfile.injector.$DAHDI_TAG
-docker build --no-cache -f dockerfiles/Dockerfile.injector.$DAHDI_TAG -t $DAHDI_INJECTOR_TARGET .
+docker build -f dockerfiles/Dockerfile.injector.$DAHDI_TAG -t $DAHDI_INJECTOR_TARGET .
 if [ $? -ne 0 ]; then
   echo "Failed to build injector: $?"
   exit 1
