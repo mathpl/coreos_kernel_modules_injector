@@ -1,5 +1,5 @@
 FROM debian:sid
 
 RUN apt-get update && apt-get install -y kmod
-COPY modules/<VERSION>/modules /lib/modules
+COPY modules/<VERSION>/* /lib/modules
 COPY inject.sh /
