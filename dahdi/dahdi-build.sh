@@ -16,4 +16,4 @@ make install
 
 echo "Build complete"
 
-rsync -va /lib/modules/* /mod_dir/ --exclude "source" --exclude "build"
+rsync -va /lib/modules /mod_dir --exclude "source" --exclude "build"

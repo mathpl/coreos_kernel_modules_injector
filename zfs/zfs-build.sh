@@ -29,5 +29,4 @@ echo "Build complete"
 cp -va /usr/local/bin /bin_dir/
 cp -va /usr/local/sbin /bin_dir/
 cp -va /usr/local/lib64 /bin_dir/
-cp -va /lib/modules /mod_dir/
-chmod uo+rw -R /bin_dir
+rsync -va /lib/modules /mod_dir --exclude "source" --exclude "build"
