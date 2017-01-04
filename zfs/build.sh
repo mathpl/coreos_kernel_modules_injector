@@ -52,9 +52,15 @@ if [ -z "$ZFS_BUILDER_IMAGE" ]; then
 fi
 
 if [ -z "$ZFS_INJECTOR_IMAGE" ]; then
-    echo "No image name for ZFS kernel modules builder. Please set \$ZFS_INJECTOR_IMAGE"
+    echo "No image name for ZFS kernel modules injectorPlease set \$ZFS_INJECTOR_IMAGE"
     echo "Defaulting to: coreos/zfs-builder"
     ZFS_INJECTOR_IMAGE="coreos/zfs-injector"
+fi
+
+if [ -z "$ZFS_BIN_IMAGE" ]; then
+    echo "No image name for ZFS binaries only image. Please set \$ZFS_BIN_IMAGE"
+    echo "Defaulting to: coreos/zfs-bin"
+    ZFS_BIN_IMAGE="coreos/zfs-bin"
 fi
 
 KBUILDER_TAG="$COREOS_VERSION"
@@ -64,6 +70,8 @@ ZFS_TAG="$COREOS_VERSION-$SPL_VERSION-$ZFS_VERSION"
 ZFS_BUILDER_TARGET="$DOCKER_REGISTRY/$ZFS_BUILDER_IMAGE:$COREOS_VERSION"
 
 ZFS_INJECTOR_TARGET="$DOCKER_REGISTRY/$ZFS_INJECTOR_IMAGE:$ZFS_TAG"
+
+ZFS_BIN_TARGET="$DOCKER_REGISTRY/$ZFS_BIN_IMAGE:$ZFS_VERSION"
 
 # Check if we've built it already
 #if curl -q "https://$DOCKER_REGISTRY/v2/$ZFS_INJECTOR_IMAGE/tags/list" |grep -q "$ZFS_TAG"; then
@@ -108,4 +116,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 docker push $ZFS_INJECTOR_TARGET
+
+sed -re "s|<VERSION>|$ZFS_VERSION|" Dockerfile.bin.template > dockerfiles/Dockerfile.bin.$ZFS_VERSION
+docker build -f dockerfiles/Dockerfile.bin.$ZFS_VERSION -t $ZFS_BIN_TARGET .
+if [ $? -ne 0 ]; then
+  echo "Failed to build injector: $?"
+  exit 1
+fi
+docker push $ZFS_BIN_TARGET
 
