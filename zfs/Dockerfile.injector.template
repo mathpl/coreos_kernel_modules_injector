@@ -1,6 +1,9 @@
-FROM debian:sid
+FROM debian:jessie
 
 RUN apt-get update && apt-get install -y kmod
-COPY binaries/<VERSION> /binaries
+COPY binaries/<VERSION>/bin /usr/local/bin
+COPY binaries/<VERSION>/sbin /usr/local/sbin
+COPY binaries/<VERSION>/lib64 /usr/local/lib64
 COPY modules/<VERSION>/* /lib/modules
 COPY inject.sh /
+RUN rmdir /usr/local/lib && ln -s /usr/local/lib64 /usr/local/lib && ldconfig
