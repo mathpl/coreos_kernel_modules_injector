@@ -117,7 +117,7 @@ if [ $? -ne 0 ]; then
 fi
 docker push $ZFS_INJECTOR_TARGET
 
-sed -re "s|<VERSION>|$ZFS_VERSION|" Dockerfile.bin.template > dockerfiles/Dockerfile.bin.$ZFS_VERSION
+sed -re "s|<VERSION>|$ZFS_TAG|" Dockerfile.bin.template > dockerfiles/Dockerfile.bin.$ZFS_VERSION
 docker build -f dockerfiles/Dockerfile.bin.$ZFS_VERSION -t $ZFS_BIN_TARGET .
 if [ $? -ne 0 ]; then
   echo "Failed to build injector: $?"
