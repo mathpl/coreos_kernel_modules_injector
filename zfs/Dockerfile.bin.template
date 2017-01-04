@@ -1,0 +1,6 @@
+FROM debian:jessie
+
+COPY binaries/<VERSION>/bin /usr/local/bin
+COPY binaries/<VERSION>/sbin /usr/local/sbin
+COPY binaries/<VERSION>/lib64 /usr/local/lib64
+RUN rmdir /usr/local/lib && ln -s /usr/local/lib64 /usr/local/lib && ldconfig
