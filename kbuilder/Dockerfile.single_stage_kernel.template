@@ -2,6 +2,7 @@ FROM <DOCKER_FROM>
 
 RUN emerge-gitclone
 RUN cd /var/lib/portage/coreos-overlay && git checkout build-<COREOS_MAJOR_VERSION>
+RUN emerge -v cpio
 RUN emerge -v coreos-sources autoconf libtool
 
 # use package if available: -gK
