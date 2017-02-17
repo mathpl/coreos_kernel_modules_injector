@@ -8,6 +8,7 @@ help() {
     echo "KBUILDER_IMAGE   coreos/kmod-builder"
     echo
     echo "Depending on your version of docker you might need to set DOCKER_API_VERSION."
+    echo "Set BUILDER_NOPKG for version of CoreOS without pre-built package available from CoreOS."
     exit 1
 }
 
@@ -90,7 +91,13 @@ if [ ! -f "pkg/zfs-${ZFS_VERSION}.tar.gz" ]; then
 fi
 
 mkdir dockerfiles 2>/dev/null || true
-sed -re "s|<DOCKER_FROM>|$KBUILDER_TARGET|" Dockerfile.builder.template > dockerfiles/Dockerfile.builder.$COREOS_VERSION
+
+BUILDER_DOCKERFILE="Dockerfile.builder.template"
+if [ -z "$BUILDER_NOPKG" ]; then
+  BUILDER_DOCKERFILE="Dockerfile.builder.nopkg.template"
+fi
+
+sed -re "s|<DOCKER_FROM>|$KBUILDER_TARGET|" $BUILDER_DOCKERFILE > dockerfiles/Dockerfile.builder.$COREOS_VERSION
 docker build --no-cache -f dockerfiles/Dockerfile.builder.$COREOS_VERSION -t $ZFS_BUILDER_TARGET .
 if [ $? -ne 0 ]; then
   echo "Failed to build builers: $?"
