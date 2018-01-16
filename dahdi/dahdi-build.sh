@@ -5,11 +5,9 @@ if [ "$1" != "build" ]; then
   exec "$@"
 fi
 
-cd /usr/src
-tar xvzf /pkg/dahdi-linux-${DAHDI_VERSION}.tar.gz
+cd /pkg/dahdi-linux
 
 echo "Building Dahdi..."
-cd dahdi-linux-${DAHDI_VERSION}
 export KVERS=$(ls /usr/lib/modules/)
 make -j2
 make install
