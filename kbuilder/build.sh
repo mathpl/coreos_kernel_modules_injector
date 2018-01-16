@@ -46,6 +46,12 @@ if [ -z "$KBUILDER_IMAGE" ]; then
     KBUILDER_IMAGE="coreos/kmod-builder"
 fi
 
+if [ -z "$COREOS_OVERLAY_COMMIT" ]; then
+    echo "No coreos-overlay commit to checkout."
+    echo "Defaulting to: HEAD"
+    COREOS_OVERLAY_COMMIT="HEAD"
+fi
+
 COREOS_DEV_TAG="$COREOS_VERSION"
 COREOS_DEV_TARGET="$DOCKER_REGISTRY/$COREOS_DEV_IMAGE:$COREOS_DEV_TAG"
 
@@ -79,7 +85,7 @@ if [[ $COREOS_MAJOR_VERSION -lt 1097 ]]; then
     KBUILDER_DOCKER_FILE="Dockerfile.single_stage_kernel.template"
 fi
 
-sed -re "s|<DOCKER_FROM>|$COREOS_DEV_TARGET|" -e "s|<COREOS_MAJOR_VERSION>|$COREOS_MAJOR_VERSION|" $KBUILDER_DOCKER_FILE > dockerfiles/Dockerfile.$COREOS_VERSION
+sed -re "s|<DOCKER_FROM>|$COREOS_DEV_TARGET|" -e "s|<COREOS_MAJOR_VERSION>|$COREOS_MAJOR_VERSION|" -e "s|<COREOS_OVERLAY_COMMIT>|$COREOS_OVERLAY_COMMIT|" $KBUILDER_DOCKER_FILE > dockerfiles/Dockerfile.$COREOS_VERSION
 
 docker build -f dockerfiles/Dockerfile.$COREOS_VERSION -t $KBUILDER_TARGET .
 docker push $KBUILDER_TARGET
