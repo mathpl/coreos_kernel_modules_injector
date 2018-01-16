@@ -5,7 +5,7 @@ if [ "$1" != "build" ]; then
   exec "$@"
 fi
 
-cd /pkg/dahdi-linux
+cd /pkg
 
 echo "Building Dahdi..."
 export KVERS=$(ls /usr/lib/modules/)
