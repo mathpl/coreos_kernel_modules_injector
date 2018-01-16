@@ -8,6 +8,7 @@ Going from the coreos dev container to workable modules and binaries, in a few s
 
 # kbuilder image:
 1. Using the converted image: setup emerge, kernel modules and minimal build tools.
+2. If you need to use a specific version of coreos-overlay get the commit in https://github.com/coreos/coreos-overlay then set it as COREOS_OVERLAY_COMMIT to use it.
 
 From there we do our builds. Currently in tree:
 
