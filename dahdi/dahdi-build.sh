@@ -9,6 +9,7 @@ cd /pkg
 
 echo "Building Dahdi..."
 export KVERS=$(ls /usr/lib/modules/)
+make firmware-download
 make -j2
 make install
 
