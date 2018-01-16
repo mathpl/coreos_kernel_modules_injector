@@ -10,7 +10,7 @@ tar xvzf /pkg/dahdi-linux-${DAHDI_VERSION}.tar.gz
 
 echo "Building Dahdi..."
 cd dahdi-linux-${DAHDI_VERSION}
-export KVERS=$(ls /usr/lib/modules/)
+export KVERS=$(ls /usr/lib/modules/|head -1)
 make -j2
 make install
 
