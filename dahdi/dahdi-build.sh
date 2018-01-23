@@ -9,7 +9,7 @@ echo "Checking out Dahdi..."
 cd /usr/src
 git clone https://github.com/asterisk/dahdi-linux.git
 cd dahdi-linux
-checkout $DAHDI_VERSION
+git checkout $DAHDI_VERSION
 
 echo "Building Dahdi..."
 export KVERS=$(ls /usr/lib/modules/)
