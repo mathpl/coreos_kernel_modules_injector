@@ -5,12 +5,15 @@ if [ "$1" != "build" ]; then
   exec "$@"
 fi
 
+echo "Checking out Dahdi..."
 cd /usr/src
-tar xvzf /pkg/dahdi-linux-${DAHDI_VERSION}.tar.gz
+git clone https://github.com/asterisk/dahdi-linux.git
+cd dahdi-linux
+git checkout $DAHDI_VERSION
 
 echo "Building Dahdi..."
-cd dahdi-linux-${DAHDI_VERSION}
 export KVERS=$(ls /usr/lib/modules/)
+make firmware-download
 make -j2
 make install
 

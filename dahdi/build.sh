@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 help() {
     echo "./convert.sh <coreos_version> <spl_version> <zfs_version>"
@@ -59,12 +59,6 @@ DAHDI_INJECTOR_TARGET="$DOCKER_REGISTRY/$DAHDI_INJECTOR_IMAGE:$DAHDI_TAG"
 #    exit 0
 #fi
 
-mkdir pkg 2>/dev/null
-
-if [ ! -f "pkg/dahdi-linux-${DAHDI_VERSION}.tar.gz" ]; then
-  wget -N -Opkg/dahdi-linux-${DAHDI_VERSION}.tar.gz https://github.com/asterisk/dahdi-linux/archive/v${DAHDI_VERSION}.tar.gz
-fi
-
 mkdir dockerfiles 2>/dev/null || true
 sed -re "s|<DOCKER_FROM>|$KBUILDER_TARGET|" Dockerfile.builder.template > dockerfiles/Dockerfile.builder.$COREOS_VERSION
 docker build -f dockerfiles/Dockerfile.builder.$COREOS_VERSION -t $DAHDI_BUILDER_TARGET .
@@ -75,7 +69,7 @@ fi
 
 MOD_DIR="modules/$COREOS_VERSION-$DAHDI_VERSION"
 mkdir $MOD_DIR 2>/dev/null
-DOCKER_OPTS="-e=COREOS_VERSION=$COREOS_VERSION -e=DAHDI_VERSION=${DAHDI_VERSION} -v=$(pwd)/$MOD_DIR:/mod_dir -v=$(pwd)/pkg:/pkg"
+DOCKER_OPTS="-e=COREOS_VERSION=$COREOS_VERSION -e=DAHDI_VERSION=${DAHDI_VERSION} -v=$(pwd)/$MOD_DIR:/mod_dir -v=$(pwd)/dahdi-linux:/pkg"
 
 docker run $DOCKER_OPTS $DAHDI_BUILDER_TARGET build
 if [ $? -ne 0 ]; then

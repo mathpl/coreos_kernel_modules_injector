@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 help() {
     echo "./convert.sh <coreos_channel> <coreos_version>"
